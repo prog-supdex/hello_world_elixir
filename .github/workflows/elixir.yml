@@ -1,0 +1,60 @@
+name: CI
+
+on:
+  push:
+    branches: [dev,main]
+  pull_request:
+    branches: [dev,main]
+
+env:
+  MIX_ENV: test
+
+jobs:
+  deps:
+    name: Dependencies
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        elixir: [ 1.12 ]
+        otp: [ 24.1 ]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Setup
+        uses: actions/setup-elixir@v1
+        with:
+          elixir-version: ${{ matrix.elixir }}
+          otp-version: ${{ matrix.otp }}
+
+      - name: Install Dependencies
+        run: |
+          mix local.hex --force
+          mix deps.get
+          mix deps.compile
+
+  unit_tests:
+    name: Unit Tests
+    needs: deps
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        elixir: [1.12]
+        otp: [24.1]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Setup
+        uses: actions/setup-elixir@v1
+        with:
+          elixir-version: ${{ matrix.elixir }}
+          otp-version: ${{ matrix.otp }}
+
+      - name: Run test
+        run: mix test
