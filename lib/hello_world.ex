@@ -8,11 +8,11 @@ defmodule HelloWorld do
 
   ## Examples
 
-      iex> HelloWorld.hello()
-      :world
+      iex> HelloWorld.greeting()
+      'hello world'
 
   """
-  def hello do
-    :world
+  def greeting do
+    'hello world'
   end
 end
