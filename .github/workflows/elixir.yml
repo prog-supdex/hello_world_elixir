@@ -12,7 +12,7 @@ env:
 jobs:
   deps:
     name: Dependencies
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     strategy:
       matrix:
         elixir: [ 1.12 ]
@@ -31,14 +31,13 @@ jobs:
 
       - name: Install Dependencies
         run: |
-          mix local.hex --force
           mix deps.get
           mix deps.compile
 
   unit_tests:
     name: Unit Tests
     needs: deps
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     strategy:
       fail-fast: false
       matrix:
