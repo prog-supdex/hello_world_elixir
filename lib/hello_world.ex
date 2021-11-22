@@ -13,6 +13,6 @@ defmodule HelloWorld do
 
   """
   def greeting do
-    'hello world'
+    'hello world!'
   end
 end
